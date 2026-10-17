@@ -24,6 +24,8 @@
 
 html {
   scroll-behavior: smooth;
+  /* Keeps anchor targets clear of the sticky special banner. */
+  scroll-padding-top: 3rem;
   -webkit-text-size-adjust: 100%;
 }
 

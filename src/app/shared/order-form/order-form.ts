@@ -8,11 +8,24 @@ import {
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { PRODUCT, SITE, formatRand } from '../../core/site';
+import {
+  DELIVERY,
+  PRODUCT,
+  SAMPLE,
+  SITE,
+  SPECIAL,
+  bottlesTotal,
+  formatRand,
+  specialLabel,
+} from '../../core/site';
 
-type Delivery = 'courier' | 'pickup';
+/** Bottles order, or a free sample on its own. */
+type Kind = 'bottles' | 'sample';
+/** courier/pickup for bottles; collect/drop-off (Durbanville only) for a sample on its own. */
+type Delivery = 'courier' | 'pickup' | 'sample-collect' | 'sample-dropoff';
 
 const MAX_QUANTITY = 20;
+const ADDRESS_MAX = 400;
 
 /**
  * Order form. There is no server: submitting builds the order as a WhatsApp message and opens
@@ -31,14 +44,20 @@ export class OrderForm {
 
   protected readonly maxQuantity = MAX_QUANTITY;
   protected readonly unitPrice = formatRand(PRODUCT.price);
+  protected readonly special = specialLabel();
+  protected readonly sampleMl = SAMPLE.sizeMl;
+  protected readonly courierCost = formatRand(DELIVERY.courierCost);
+  protected readonly courierTime = DELIVERY.courierTime;
 
   protected readonly form = this.fb.group({
+    kind: this.fb.control<Kind>('bottles'),
     name: ['', [Validators.required, Validators.maxLength(80)]],
     phone: ['', [Validators.required, Validators.pattern(/^\+?[\d\s()-]{9,20}$/)]],
     email: ['', [Validators.email, Validators.maxLength(120)]],
     quantity: [1, [Validators.required, Validators.min(1), Validators.max(MAX_QUANTITY)]],
+    addSample: [false],
     delivery: this.fb.control<Delivery | null>(null, Validators.required),
-    address: ['', Validators.maxLength(400)],
+    address: ['', Validators.maxLength(ADDRESS_MAX)],
     notes: ['', Validators.maxLength(500)],
   });
 
@@ -46,12 +65,20 @@ export class OrderForm {
     initialValue: this.form.getRawValue(),
   });
 
-  protected readonly isCourier = computed(() => this.value().delivery === 'courier');
+  protected readonly isSample = computed(() => this.value().kind === 'sample');
+  protected readonly needsAddress = computed(() =>
+    ['courier', 'sample-dropoff'].includes(this.value().delivery ?? ''),
+  );
   protected readonly total = computed(() => {
     const qty = Number(this.value().quantity);
     return Number.isInteger(qty) && qty >= 1 && qty <= MAX_QUANTITY
-      ? formatRand(qty * PRODUCT.price)
+      ? formatRand(bottlesTotal(qty))
       : null;
+  });
+  /** True when the special lowers the total (2+ bottles). */
+  protected readonly specialApplied = computed(() => {
+    const qty = Number(this.value().quantity);
+    return !!SPECIAL && qty >= SPECIAL.quantity;
   });
 
   /** Set after a valid submit; the WhatsApp link stays available in case the pop-up was blocked. */
@@ -60,16 +87,30 @@ export class OrderForm {
   protected readonly submitted = signal(false);
 
   constructor() {
-    // A delivery address is only needed for courier orders.
-    this.form.controls.delivery.valueChanges.subscribe((delivery) => {
-      const address = this.form.controls.address;
+    const { kind, quantity, delivery, address } = this.form.controls;
+
+    // Switching between bottles and a sample changes which delivery options exist.
+    kind.valueChanges.subscribe((k) => {
+      delivery.reset(null);
+      if (k === 'sample') quantity.disable();
+      else quantity.enable();
+    });
+
+    // An address is needed for courier orders and sample drop-offs.
+    delivery.valueChanges.subscribe((d) => {
       address.setValidators(
-        delivery === 'courier'
-          ? [Validators.required, Validators.maxLength(400)]
-          : Validators.maxLength(400),
+        d === 'courier' || d === 'sample-dropoff'
+          ? [Validators.required, Validators.maxLength(ADDRESS_MAX)]
+          : Validators.maxLength(ADDRESS_MAX),
       );
       address.updateValueAndValidity();
     });
+  }
+
+  /** Switches the form to a free sample (used by the "Try a sample" section). */
+  requestSample(): void {
+    if (this.sentUrl()) this.startOver();
+    this.form.controls.kind.setValue('sample');
   }
 
   protected changeQuantity(step: number): void {
@@ -93,9 +134,10 @@ export class OrderForm {
     }
 
     const message = this.buildMessage();
+    const subject = this.isSample() ? 'Miamora sample request' : 'Miamora order';
     const whatsapp = `https://wa.me/${SITE.whatsappNumber}?text=${encodeURIComponent(message)}`;
     const email =
-      `mailto:${SITE.email}?subject=${encodeURIComponent('Miamora order')}` +
+      `mailto:${SITE.email}?subject=${encodeURIComponent(subject)}` +
       `&body=${encodeURIComponent(message)}`;
     this.sentUrl.set(whatsapp);
     this.emailUrl.set(email);
@@ -111,21 +153,44 @@ export class OrderForm {
 
   private buildMessage(): string {
     const v = this.form.getRawValue();
+    const sample = `${SAMPLE.sizeMl}ml sample`;
     const lines = [
-      `Hi Miamora! I'd like to place an order.`,
+      v.kind === 'sample'
+        ? `Hi Miamora! I'd love to try a free ${sample}.`
+        : `Hi Miamora! I'd like to place an order.`,
       ``,
       `Name: ${v.name.trim()}`,
       `Contact number: ${v.phone.trim()}`,
     ];
     if (v.email.trim()) lines.push(`Email: ${v.email.trim()}`);
-    lines.push(
-      ``,
-      `Quantity: ${v.quantity} × ${PRODUCT.sizeMl}ml Eau de Parfum (${this.unitPrice} each)`,
-      `Total: ${formatRand(v.quantity * PRODUCT.price)}` +
-        (v.delivery === 'courier' ? ' + courier cost' : ''),
-      `Delivery: ${v.delivery === 'courier' ? 'Courier to me (100% deposit)' : 'Pick-up in Durbanville (no deposit)'}`,
-    );
-    if (v.delivery === 'courier') lines.push(`Delivery address: ${v.address.trim()}`);
+    lines.push(``);
+
+    if (v.kind === 'sample') {
+      lines.push(
+        `Sample: Free ${sample}`,
+        v.delivery === 'sample-dropoff'
+          ? `Delivery: Please drop it off in Durbanville`
+          : `Delivery: I'll collect it in Durbanville`,
+      );
+      if (v.delivery === 'sample-dropoff') lines.push(`Address: ${v.address.trim()}`);
+    } else {
+      const total = formatRand(bottlesTotal(v.quantity));
+      const courier = v.delivery === 'courier';
+      lines.push(
+        `Quantity: ${v.quantity} × ${PRODUCT.sizeMl}ml Eau de Parfum`,
+        `Total: ${total}` +
+          (this.specialApplied() ? ` (${this.special} special)` : '') +
+          (courier ? ` + courier (about ${this.courierCost})` : ''),
+      );
+      if (v.addSample) lines.push(`Please add a free ${sample}`);
+      lines.push(
+        courier
+          ? `Delivery: Courier to me (I'll pay in full by EFT)`
+          : `Delivery: I'll collect in Durbanville (EFT or cash on collection)`,
+      );
+      if (courier) lines.push(`Delivery address: ${v.address.trim()}`);
+    }
+
     if (v.notes.trim()) lines.push(``, `Special requests: ${v.notes.trim()}`);
     return lines.join('\n');
   }

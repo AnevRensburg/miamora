@@ -5,7 +5,7 @@ export const routes: Routes = [
   {
     path: '',
     component: Home,
-    title: 'Miamora | French-made Eau de Parfum, delivered in South Africa',
+    title: 'Miamora | Inspired by Scandal: designer scent, not designer price',
   },
   // Rendered to 404.html by scripts/postbuild.mjs; GitHub Pages serves it for unknown URLs.
   {

@@ -25,6 +25,67 @@
       background: #fff;
     }
   }
+
+  &--ghost {
+    border: 1px solid rgb(253 249 236 / 0.7);
+    color: var(--cream);
+
+    &:hover {
+      background: rgb(253 249 236 / 0.12);
+    }
+  }
+
+  &--dark {
+    background: var(--brown);
+    color: var(--cream);
+
+    &:hover {
+      background: var(--brown-soft);
+    }
+  }
+}
+
+/* ---------- Special banner (sticky) ---------- */
+
+.promo {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  min-block-size: 2.25rem;
+  padding: 0.35rem var(--gutter);
+  background: var(--cream);
+  color: var(--brown);
+  font-size: 0.9rem;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 0 1px 0 rgb(67 40 32 / 0.15);
+
+  &:hover .promo__cta {
+    text-decoration: underline;
+  }
+}
+
+.promo__tag {
+  padding: 0.1rem 0.55rem;
+  border-radius: 999px;
+  background: var(--brown);
+  color: var(--cream);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.promo__cta {
+  font-weight: 600;
+  text-underline-offset: 3px;
+
+  @media (width < 480px) {
+    display: none;
+  }
 }
 
 /* ---------- Hero ---------- */
@@ -109,6 +170,20 @@
     max-inline-size: 36rem;
     font-size: clamp(1.05rem, 1.6vw, 1.3rem);
   }
+
+  .hero__eyebrow {
+    margin-block-end: 1.25rem;
+    font-size: clamp(0.85rem, 1.2vw, 1rem);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #f0c46a;
+  }
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
 }
 
 /* ---------- Order reminders ---------- */
@@ -166,6 +241,40 @@
   padding-block: 0 clamp(3rem, 8vw, 5.5rem);
 }
 
+/* ---------- Free sample ---------- */
+
+.sample {
+  padding-block-end: clamp(3rem, 8vw, 5.5rem);
+}
+
+.sample__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.5rem 3rem;
+  padding: clamp(1.75rem, 4vw, 2.75rem);
+  border: 2px solid var(--brown);
+
+  h2 {
+    margin: 0 0 0.75rem;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+  }
+
+  p {
+    margin: 0;
+    max-inline-size: 40rem;
+  }
+}
+
+.sample__eyebrow {
+  margin-block-end: 0.5rem !important;
+  font-size: 0.85rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--brown-soft);
+}
+
 /* ---------- Product + order form ---------- */
 
 .product {
@@ -209,6 +318,34 @@
   }
 }
 
+.product__special {
+  padding: 0.15rem 0.7rem;
+  border-radius: 999px;
+  background: var(--cream);
+  color: var(--brown);
+  font-size: 0.9rem;
+  font-weight: 600;
+  opacity: 1 !important;
+}
+
+.product__subtitle {
+  margin: 2rem 0 0.75rem;
+  font-family: var(--font-body);
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.product__info {
+  margin: 0;
+  padding-inline-start: 1.1rem;
+  font-size: 0.95em;
+
+  li {
+    margin-block-end: 0.6rem;
+  }
+}
+
 .product__price {
   font-size: 2rem;
   font-weight: 500;
@@ -221,13 +358,6 @@
   border-radius: 999px;
   font-size: 0.95rem;
   letter-spacing: 0.02em;
-}
-
-.product__note {
-  margin-block-start: 2rem !important;
-  font-size: 0.95em;
-  font-style: italic;
-  opacity: 0.9;
 }
 
 .product__form {

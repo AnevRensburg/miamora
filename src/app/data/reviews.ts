@@ -20,7 +20,15 @@ export interface Review {
 /** Copied from Google reviews. Newest first. */
 export const REVIEWS: readonly Review[] = [
   {
-    author: 'Anel Lubbe',
+    author: 'Pauline N.',
+    rating: 5,
+    date: 'October 2026',
+    text: [
+      'I was very pleasantly surprised by the beautiful bottle and even more delighted by the lovely fragrance. The scent lingers on… and lasts the whole day. I’ll definitely buy again and even give to friends & family as birthday gifts!',
+    ],
+  },
+  {
+    author: 'Anel L.',
     rating: 5,
     date: 'October 2026',
     text: [

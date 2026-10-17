@@ -1,4 +1,16 @@
-<a class="skip-link" href="#order">Skip to the order form</a>
+<a class="skip-link" routerLink="/" fragment="order" queryParamsHandling="preserve"
+  >Skip to the order form</a
+>
+
+@if (special) {
+  <a class="promo" routerLink="/" fragment="order" queryParamsHandling="preserve">
+    <span class="promo__tag">Special</span>
+    <span
+      ><strong>{{ special }}</strong> · save {{ saving }}</span
+    >
+    <span class="promo__cta" aria-hidden="true">Order now →</span>
+  </a>
+}
 
 <header class="hero">
   <app-picture class="hero__image" src="hero/hero" alt="" sizes="100vw" [priority]="true" />
@@ -6,20 +18,39 @@
     <nav class="hero__nav" aria-label="Main">
       <a class="logo" href="/" aria-label="Miamora home">Miamora</a>
       <ul>
-        <li><a href="#product">The Perfume</a></li>
-        <li><a href="#reviews">Reviews</a></li>
-        <li><a href="#order">Order</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li><a routerLink="/" fragment="product" queryParamsHandling="preserve">The Perfume</a></li>
+        <li><a routerLink="/" fragment="reviews" queryParamsHandling="preserve">Reviews</a></li>
+        <li><a routerLink="/" fragment="order" queryParamsHandling="preserve">Order</a></li>
+        <li><a routerLink="/" fragment="contact" queryParamsHandling="preserve">Contact</a></li>
       </ul>
     </nav>
 
     <div class="hero__copy">
-      <h1>French-Made.<br />Imported. On Request.</h1>
+      <p class="hero__eyebrow">Inspired by {{ product.inspiredBy }}</p>
+      <h1>Designer scent.<br />Not designer price.</h1>
       <p>
-        Welcome to Miamora! Every bottle is a luxury Eau de Parfum, crafted with quality French oils
-        and delivered straight to you, wherever you are in South Africa.
+        Welcome to Miamora! A luxury {{ product.sizeMl }}ml Eau de Parfum, handcrafted in South
+        Africa with quality French oils: sweet honey, white florals and warm caramel. Just
+        {{ price }} a bottle, delivered anywhere in South Africa.
       </p>
-      <a class="button button--light" href="#order">Order yours · {{ price }}</a>
+      <div class="hero__actions">
+        <a
+          class="button button--light"
+          routerLink="/"
+          fragment="order"
+          queryParamsHandling="preserve"
+          >Order yours · {{ price }}</a
+        >
+        <a
+          class="button button--ghost"
+          routerLink="/"
+          fragment="order"
+          queryParamsHandling="preserve"
+          (click)="orderForm.requestSample()"
+        >
+          Try a free sample
+        </a>
+      </div>
     </div>
   </div>
 </header>
@@ -54,6 +85,29 @@
     <app-reviews />
   </section>
 
+  <section class="sample container" aria-labelledby="sample-title">
+    <div class="sample__inner">
+      <div>
+        <p class="sample__eyebrow">Free {{ sampleMl }}ml sample</p>
+        <h2 id="sample-title">Not sure yet? Try a sample.</h2>
+        <p>
+          Smell it before you buy. Our {{ sampleMl }}ml samples are free: collect yours from us in
+          Durbanville, or if you live in Durbanville we'll drop it off. Ask for one on its own, or
+          add one to your order.
+        </p>
+      </div>
+      <a
+        class="button button--dark"
+        routerLink="/"
+        fragment="order"
+        queryParamsHandling="preserve"
+        (click)="orderForm.requestSample()"
+      >
+        Request my free sample
+      </a>
+    </div>
+  </section>
+
   <section id="product" class="product" aria-labelledby="product-title">
     <div class="product__inner container">
       <div class="product__details">
@@ -61,27 +115,41 @@
         <p class="product__meta">
           <span class="product__price">{{ price }}</span>
           <span>{{ product.sizeMl }}ml bottle</span>
+          @if (special) {
+            <span class="product__special">or {{ special }}</span>
+          }
         </p>
         <p class="product__inspired">Inspired by {{ product.inspiredBy }}</p>
 
         <p>
-          A luxury fragrance crafted with quality oils imported from France; worn by confident women
-          across South Africa.
+          The designer scent you love, without the designer price. Miamora is a luxury fragrance
+          handcrafted in South Africa with quality oils imported from France, inspired by the
+          designer favourite {{ product.inspiredBy }}.
         </p>
         <p>
           With top notes of sweet honey, a heart of white florals, and a warm base of caramel and
           woods, it is long-lasting, elegant, and perfect for everyday luxury or special occasions.
         </p>
-        <p>Presented in a {{ product.sizeMl }}ml bottle.</p>
-        <p class="product__note">
-          Please note: Courier delivery requires a 100% deposit upfront. Collection from us requires
-          no deposit. If you'd like your order couriered, fill in your delivery address and we'll
-          reply with the courier cost and estimated delivery date.
-        </p>
+
+        <h3 class="product__subtitle">Payment &amp; delivery</h3>
+        <ul class="product__info">
+          <li>
+            <strong>Pay by EFT, or cash on collection.</strong> We'll send our banking details on
+            WhatsApp when we confirm your order.
+          </li>
+          <li>
+            <strong>Courier anywhere in South Africa:</strong> about {{ courierCost }},
+            {{ courierTime }}. Courier orders are paid in full by EFT before we send.
+          </li>
+          <li><strong>Collect in Durbanville:</strong> no deposit needed.</li>
+          <li>
+            <strong>Free {{ sampleMl }}ml samples:</strong> on their own, or added to your order.
+          </li>
+        </ul>
       </div>
 
       <div id="order" class="product__form" tabindex="-1">
-        <app-order-form />
+        <app-order-form #orderForm />
       </div>
     </div>
   </section>
@@ -151,6 +219,6 @@
 
 <footer class="footer">
   <div class="container">
-    <p>© {{ year }} Miamora. Made with love in Durbanville.</p>
+    <p>© {{ year }} Miamora. Handcrafted in Durbanville with quality French oils.</p>
   </div>
 </footer>
