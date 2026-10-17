@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "miamora-dist",
+      "runtimeExecutable": "/home/ane/.nvm/versions/node/v24.22.0/bin/node",
+      "runtimeArgs": ["node_modules/http-server/bin/http-server", "dist/miamora/browser", "-p", "8090", "-c-1"],
+      "port": 8090
+    }
+  ]
+}

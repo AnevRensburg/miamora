@@ -1,0 +1,150 @@
+<a class="skip-link" href="#order">Skip to the order form</a>
+
+<header class="hero">
+  <app-picture class="hero__image" src="hero/hero" alt="" sizes="100vw" [priority]="true" />
+  <div class="hero__inner container">
+    <nav class="hero__nav" aria-label="Main">
+      <a class="logo" href="/" aria-label="Miamora home">Miamora</a>
+      <ul>
+        <li><a href="#product">The Perfume</a></li>
+        <li><a href="#order">Order</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="hero__copy">
+      <h1>French-Made.<br />Imported. On Request.</h1>
+      <p>
+        Welcome to Miamora! Every bottle is a luxury Eau de Parfum, crafted with quality French oils
+        and delivered straight to you, wherever you are in South Africa.
+      </p>
+      <a class="button button--light" href="#order">Order yours · {{ price }}</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="reminders container" aria-labelledby="reminders-title">
+    <h2 id="reminders-title" class="section-title">Order Reminders</h2>
+    <ul class="reminders__grid">
+      @for (card of reminders; track card.image) {
+        <li class="reminder">
+          <app-picture
+            class="reminder__image"
+            [src]="card.image"
+            [alt]="card.alt"
+            sizes="(min-width: 900px) 300px, 45vw"
+          />
+          <div class="reminder__text">
+            @if (card.title) {
+              <h3>{{ card.title }}</h3>
+            }
+            @for (p of card.paragraphs; track $index) {
+              <p>{{ p }}</p>
+            }
+          </div>
+        </li>
+      }
+    </ul>
+  </section>
+
+  <section id="product" class="product" aria-labelledby="product-title">
+    <div class="product__inner container">
+      <div class="product__details">
+        <h2 id="product-title" class="section-title section-title--light">Eau de Parfum</h2>
+        <p class="product__meta">
+          <span class="product__price">{{ price }}</span>
+          <span>{{ product.sizeMl }}ml bottle</span>
+        </p>
+        <p class="product__inspired">Inspired by {{ product.inspiredBy }}</p>
+
+        <p>
+          A luxury fragrance crafted with quality oils imported from France; worn by confident women
+          across South Africa.
+        </p>
+        <p>
+          With top notes of sweet honey, a heart of white florals, and a warm base of caramel and
+          woods, it is long-lasting, elegant, and perfect for everyday luxury or special occasions.
+        </p>
+        <p>Presented in a {{ product.sizeMl }}ml bottle.</p>
+        <p class="product__note">
+          Please note: Courier delivery requires a 100% deposit upfront. Collection from us requires
+          no deposit. If you'd like your order couriered, fill in your delivery address and we'll
+          reply with the courier cost and estimated delivery date.
+        </p>
+      </div>
+
+      <div id="order" class="product__form" tabindex="-1">
+        <app-order-form />
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact" aria-labelledby="contact-title">
+    <app-picture
+      class="contact__image"
+      src="product/bottle"
+      alt="A Miamora perfume bottle catching the afternoon light"
+      sizes="(min-width: 900px) 50vw, 100vw"
+    />
+    <div class="contact__details">
+      <h2 id="contact-title" class="visually-hidden">Contact us</h2>
+
+      <div class="contact__block">
+        <h3>Address</h3>
+        <address>
+          @for (line of site.address; track line) {
+            {{ line }}<br />
+          }
+        </address>
+      </div>
+
+      <div class="contact__block">
+        <h3>WhatsApp</h3>
+        <p>
+          <a [href]="'https://wa.me/' + site.whatsappNumber" target="_blank" rel="noopener">
+            {{ site.phoneDisplay }}
+          </a>
+        </p>
+      </div>
+
+      <div class="contact__block">
+        <h3>Email</h3>
+        <p>
+          <a [href]="'mailto:' + site.email">{{ site.email }}</a>
+        </p>
+      </div>
+
+      <div class="contact__block">
+        <h3>{{ site.socialHandle }}</h3>
+        <ul class="social">
+          <li>
+            <a [href]="site.instagram" target="_blank" rel="noopener" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="2.5" y="2.5" width="19" height="19" rx="5.5" />
+                <circle cx="12" cy="12" r="4.5" />
+                <circle class="fill" cx="17.6" cy="6.4" r="1.2" />
+              </svg>
+            </a>
+          </li>
+          <li>
+            <a [href]="site.facebook" target="_blank" rel="noopener" aria-label="Facebook">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  class="fill"
+                  d="M12 1.5a10.5 10.5 0 0 0-1.64 20.87v-7.34H7.7V12h2.66V9.69c0-2.63 1.57-4.09 3.97-4.09 1.15 0 2.35.21 2.35.21v2.58h-1.32c-1.3 0-1.71.81-1.71 1.64V12h2.91l-.47 3.03h-2.44v7.34A10.5 10.5 0 0 0 12 1.5Z"
+                />
+              </svg>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <p>© {{ year }} Miamora. Made with love in Durbanville.</p>
+  </div>
+</footer>
