@@ -160,6 +160,12 @@
   }
 }
 
+/* ---------- Reviews ---------- */
+
+.reviews-section {
+  padding-block: 0 clamp(3rem, 8vw, 5.5rem);
+}
+
 /* ---------- Product + order form ---------- */
 
 .product {

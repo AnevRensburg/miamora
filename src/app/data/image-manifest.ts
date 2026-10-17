@@ -9,52 +9,36 @@ export interface ImageEntry {
 }
 
 export const IMAGE_MANIFEST = {
-  "hero/hero": {
-    "width": 1216,
-    "height": 848,
-    "widths": [
-      640,
-      1216
-    ]
+  'hero/hero': {
+    width: 1216,
+    height: 848,
+    widths: [640, 1216],
   },
-  "cards/gift": {
-    "width": 461,
-    "height": 826,
-    "widths": [
-      400,
-      461
-    ]
+  'cards/gift': {
+    width: 461,
+    height: 826,
+    widths: [400, 461],
   },
-  "cards/books": {
-    "width": 375,
-    "height": 250,
-    "widths": [
-      375
-    ]
+  'cards/books': {
+    width: 375,
+    height: 250,
+    widths: [375],
   },
-  "cards/pricing": {
-    "width": 375,
-    "height": 250,
-    "widths": [
-      375
-    ]
+  'cards/pricing': {
+    width: 375,
+    height: 250,
+    widths: [375],
   },
-  "cards/hands": {
-    "width": 375,
-    "height": 250,
-    "widths": [
-      375
-    ]
+  'cards/hands': {
+    width: 375,
+    height: 250,
+    widths: [375],
   },
-  "product/bottle": {
-    "width": 1248,
-    "height": 832,
-    "widths": [
-      480,
-      960,
-      1248
-    ]
-  }
+  'product/bottle': {
+    width: 1248,
+    height: 832,
+    widths: [480, 960, 1248],
+  },
 } as const satisfies Record<string, ImageEntry>;
 
 export type ImageKey = keyof typeof IMAGE_MANIFEST;

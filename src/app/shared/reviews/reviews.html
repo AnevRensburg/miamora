@@ -1,0 +1,40 @@
+<ul class="reviews" [class.reviews--single]="reviews.length === 1">
+  @for (review of reviews; track review.author + review.date) {
+    <li class="review" [class.review--photo]="review.photo">
+      @if (review.photo; as photo) {
+        <app-picture
+          class="review__photo"
+          [src]="photo.src"
+          [alt]="photo.alt"
+          sizes="(min-width: 900px) 320px, 100vw"
+        />
+      }
+      <figure class="review__body">
+        <p class="review__stars" [attr.aria-label]="review.rating + ' out of 5 stars'">
+          @for (n of stars; track n) {
+            <svg viewBox="0 0 24 24" aria-hidden="true" [class.off]="n > review.rating">
+              <path
+                d="m12 2.6 2.9 6 6.5.8-4.8 4.5 1.2 6.5L12 17.2l-5.8 3.2 1.2-6.5L2.6 9.4l6.5-.8z"
+              />
+            </svg>
+          }
+        </p>
+        <blockquote>
+          @for (p of review.text; track $index) {
+            <p>{{ p }}</p>
+          }
+        </blockquote>
+        <figcaption>
+          <span class="review__author">{{ review.author }}</span>
+          <span class="review__source">Google review · {{ review.date }}</span>
+        </figcaption>
+      </figure>
+    </li>
+  }
+</ul>
+
+<p class="reviews__links">
+  <a [href]="googleUrl" target="_blank" rel="noopener">See our reviews on Google</a>
+  <span aria-hidden="true">·</span>
+  <a [href]="googleUrl" target="_blank" rel="noopener">Loved your Miamora? Leave a review</a>
+</p>

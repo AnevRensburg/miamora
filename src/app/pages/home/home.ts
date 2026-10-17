@@ -3,6 +3,7 @@ import { ImageKey } from '../../data/image-manifest';
 import { PRODUCT, SITE, formatRand } from '../../core/site';
 import { OrderForm } from '../../shared/order-form/order-form';
 import { Picture } from '../../shared/picture/picture';
+import { Reviews } from '../../shared/reviews/reviews';
 
 interface Reminder {
   readonly image: ImageKey;
@@ -13,7 +14,7 @@ interface Reminder {
 
 @Component({
   selector: 'app-home',
-  imports: [Picture, OrderForm],
+  imports: [Picture, OrderForm, Reviews],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './home.html',
   styleUrl: './home.scss',
