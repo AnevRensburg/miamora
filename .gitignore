@@ -45,3 +45,6 @@ Thumbs.db
 
 # Original photos (large). The optimised copies in public/images are what ship.
 /images-src
+
+# Private notes for Claude (the repo is public)
+CLAUDE.local.md

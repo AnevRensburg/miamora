@@ -53,11 +53,11 @@
             "currenciesAccepted": "ZAR",
             "address": {
               "@type": "PostalAddress",
-              "streetAddress": "14 Lindenberg Avenue, Valmary Park",
               "addressLocality": "Durbanville",
               "addressRegion": "Western Cape",
               "addressCountry": "ZA"
             },
+            "areaServed": { "@type": "Country", "name": "South Africa" },
             "sameAs": [
               "https://www.instagram.com/miamoraparfum",
               "https://www.facebook.com/miamoraparfum"
@@ -83,8 +83,18 @@
                 "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "ZA" },
                 "deliveryTime": {
                   "@type": "ShippingDeliveryTime",
-                  "handlingTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 1, "unitCode": "DAY" },
-                  "transitTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 2, "unitCode": "DAY" }
+                  "handlingTime": {
+                    "@type": "QuantitativeValue",
+                    "minValue": 0,
+                    "maxValue": 1,
+                    "unitCode": "DAY"
+                  },
+                  "transitTime": {
+                    "@type": "QuantitativeValue",
+                    "minValue": 1,
+                    "maxValue": 2,
+                    "unitCode": "DAY"
+                  }
                 }
               }
             }

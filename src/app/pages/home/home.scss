@@ -417,6 +417,12 @@
   }
 }
 
+.contact__note {
+  margin-block-start: 0.5rem !important;
+  font-size: 0.95rem;
+  color: var(--brown-soft);
+}
+
 .social {
   display: flex;
   gap: 1rem;

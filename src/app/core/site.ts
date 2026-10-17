@@ -8,7 +8,8 @@ export const SITE = {
   phoneDisplay: '071 547 7921',
   /** International format without "+" or spaces, as wa.me expects. */
   whatsappNumber: '27715477921',
-  address: ['14 Lindenberg Avenue', 'Valmary Park', 'Durbanville', 'Western Cape'],
+  /** Area only: the street address is shared on WhatsApp when an order is confirmed. */
+  address: ['Valmary Park', 'Durbanville', 'Western Cape'],
   socialHandle: '@miamoraparfum',
   instagram: 'https://www.instagram.com/miamoraparfum',
   facebook: 'https://www.facebook.com/miamoraparfum',
