@@ -37,6 +37,8 @@
 
 .review__body {
   position: relative;
+  display: flex;
+  flex-direction: column;
   margin: 0;
   padding: clamp(1.75rem, 4vw, 2.75rem);
 
@@ -72,6 +74,7 @@
 }
 
 blockquote {
+  flex: 1;
   margin: 0 0 1.5rem;
   font-family: var(--font-display);
   font-size: clamp(1.2rem, 2.2vw, 1.5rem);
