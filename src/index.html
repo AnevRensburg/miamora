@@ -39,22 +39,56 @@
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "Store",
-        "name": "Miamora",
-        "url": "https://miamora.co.za/",
-        "image": "https://miamora.co.za/images/og-image.jpg",
-        "email": "info@miamora.co.za",
-        "telephone": "+27 71 547 7921",
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "14 Lindenberg Avenue, Valmary Park",
-          "addressLocality": "Durbanville",
-          "addressRegion": "Western Cape",
-          "addressCountry": "ZA"
-        },
-        "sameAs": [
-          "https://www.instagram.com/miamoraparfum",
-          "https://www.facebook.com/miamoraparfum"
+        "@graph": [
+          {
+            "@type": "Store",
+            "@id": "https://miamora.co.za/#store",
+            "name": "Miamora",
+            "url": "https://miamora.co.za/",
+            "image": "https://miamora.co.za/images/og-image.jpg",
+            "email": "info@miamora.co.za",
+            "telephone": "+27 71 547 7921",
+            "priceRange": "R250",
+            "paymentAccepted": "EFT, Cash",
+            "currenciesAccepted": "ZAR",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "14 Lindenberg Avenue, Valmary Park",
+              "addressLocality": "Durbanville",
+              "addressRegion": "Western Cape",
+              "addressCountry": "ZA"
+            },
+            "sameAs": [
+              "https://www.instagram.com/miamoraparfum",
+              "https://www.facebook.com/miamoraparfum"
+            ]
+          },
+          {
+            "@type": "Product",
+            "name": "Miamora Eau de Parfum 50ml",
+            "description": "A luxury 50ml Eau de Parfum handcrafted in South Africa with quality French oils, inspired by Jean Paul Gaultier Scandal: sweet honey, white florals and a warm base of caramel and woods.",
+            "image": "https://miamora.co.za/images/og-image.jpg",
+            "brand": { "@type": "Brand", "name": "Miamora" },
+            "offers": {
+              "@type": "Offer",
+              "url": "https://miamora.co.za/",
+              "price": "250.00",
+              "priceCurrency": "ZAR",
+              "availability": "https://schema.org/InStock",
+              "itemCondition": "https://schema.org/NewCondition",
+              "seller": { "@id": "https://miamora.co.za/#store" },
+              "shippingDetails": {
+                "@type": "OfferShippingDetails",
+                "shippingRate": { "@type": "MonetaryAmount", "value": "70.00", "currency": "ZAR" },
+                "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "ZA" },
+                "deliveryTime": {
+                  "@type": "ShippingDeliveryTime",
+                  "handlingTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 1, "unitCode": "DAY" },
+                  "transitTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 2, "unitCode": "DAY" }
+                }
+              }
+            }
+          }
         ]
       }
     </script>

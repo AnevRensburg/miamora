@@ -5,6 +5,7 @@
  *  - hero preload: point it at the AVIF files the <picture> actually uses, with type="image/avif"
  *    so browsers without AVIF support skip it and use the WebP <img> instead
  *  - removes index.csr.html (every route is prerendered)
+ *  - writes sitemap.xml with today's date (robots.txt in public/ points to it)
  */
 import { readdir, readFile, rename, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
@@ -12,6 +13,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const dist = path.join(root, 'dist/miamora/browser');
+const SITE = 'https://miamora.co.za';
 
 // 1. 404 page
 await rename(path.join(dist, '404/index.html'), path.join(dist, '404.html'));
@@ -41,4 +43,18 @@ for (const file of htmlFiles) {
 // 3. Not needed: every route is prerendered
 await rm(path.join(dist, 'index.csr.html'), { force: true });
 
-console.log(`postbuild: 404.html, ${rewritten} AVIF preload(s)`);
+// 4. Sitemap (the site is a single page)
+const today = new Date().toISOString().slice(0, 10);
+await writeFile(
+  path.join(dist, 'sitemap.xml'),
+  `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>${SITE}/</loc>
+    <lastmod>${today}</lastmod>
+  </url>
+</urlset>
+`,
+);
+
+console.log(`postbuild: 404.html, sitemap.xml, ${rewritten} AVIF preload(s)`);
