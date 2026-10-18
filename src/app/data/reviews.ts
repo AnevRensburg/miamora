@@ -20,6 +20,14 @@ export interface Review {
 /** Copied from Google reviews. Newest first. */
 export const REVIEWS: readonly Review[] = [
   {
+    author: 'Marianne H.',
+    rating: 5,
+    date: 'October 2026',
+    text: [
+      'I love the perfume. It smells heavenly on me and it lasts for hours. Perfect!! I ordered a second one to keep in my vanity case for travelling. The bottle is exceptionally classy.',
+    ],
+  },
+  {
     author: 'Pauline N.',
     rating: 5,
     date: 'October 2026',
