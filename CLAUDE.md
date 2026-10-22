@@ -84,3 +84,7 @@ Node is installed with nvm and is not on the default PATH:
 - The build inlines Google Fonts; in a sandboxed shell the font download can fail with a TLS
   error. Re-run the build outside the sandbox. CI is unaffected.
 - The old street address is still in early git history; it was public on the site at the time.
+- Before 17 Oct 2026 the domain pointed at an unused Shopify setup (it answered 409/403 and had
+  Shopify's robots.txt). Search Console warnings like "other 4xx", "blocked by robots.txt" and
+  "403" for URLs such as `/cart`, `/collections/…` or `/products/…` come from that era and can be
+  ignored; those URLs now return a real 404 with `noindex` (`pages/not-found`).
