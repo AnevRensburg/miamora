@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DOCUMENT, inject } from '@angular/core';
+import { Meta } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -32,4 +33,11 @@ import { RouterLink } from '@angular/router';
     }
   `,
 })
-export class NotFound {}
+export class NotFound {
+  constructor() {
+    // 404.html is served for every unknown URL: keep it out of Google, and drop the homepage
+    // canonical inherited from index.html so the two signals don't conflict.
+    inject(Meta).updateTag({ name: 'robots', content: 'noindex' });
+    inject(DOCUMENT).querySelector('link[rel="canonical"]')?.remove();
+  }
+}
